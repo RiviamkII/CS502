@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Word Guessing</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700" rel="stylesheet">
+</head>
+<body>
+<!-- The option view -->
+<div class="container">
+    <div id="optionView">
+        <div class="panel well well-sm">
+            <form class="form-inline">
+                <div class="form-group pull-left">
+                    <label class="control-label  margin_right1" for="select-font">Font</label>
+                    <select id="select-font" class="form-control">
+                    </select>
+                </div>
+                <div class="form-group pull-left">
+                    <label class="control-label  margin_right1" for="select-level">Level</label>
+                    <select id="select-level" class="form-control">
+                    </select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Word</span>
+                    <input  id="wordColor" type="color" style="width: 4em" class="form-control min_width"/>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Guess</span>
+                    <input id="guessColor" type="color" style="width: 4em" class="form-control min_width"/>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Fore</span>
+                    <input id="foreColor" type="color" style="width: 4em" class="form-control min_width"/>
+                </div>
+                <button type="button" class="btn btn-primary pull-right" onclick="newGame()" id="newAGame">
+                    New Game
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- The game list -->
+    <div class="well well-sm" id="gameList">
+        <table id="table" class="table table-condensed">
+            <thead>
+                <tr id="tableHead">
+                    <th>Level</th>
+                    <th>Phrase</th>
+                    <th>Remaining</th>
+                    <th>Answer</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- The game view page -->
+    <div id="gamePanel">
+        <div id="gameView-background" class="well well-sm">
+            <div class="form-inline">
+                <div id="gameControl" class="form-group">
+                    <span id="showRemaining"></span>
+                    <input type="text" id="wordGuess" class="form-control">
+                    <span id="game-guess" onclick="makeGuess()" class="btn btn-sm btn-primary">Guess</span>
+                </div>
+                <button id="closeGameView" class="btn btn-danger btn-sm pull-right" onclick="closeGameView()">&times;</button>
+            </div>
+            <form class="form-inline">
+                <div id ="game-content1" class="form-group pull-right"></div>
+            </form>
+            <form class="form-inline">
+                <div id ="game-content2" class="form-group"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="javascripts/app.js"></script>
+</body>
+</html>
