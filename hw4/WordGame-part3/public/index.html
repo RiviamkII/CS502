@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Word Guessing</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cormorant+SC:600" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/mdui/0.4.0/css/mdui.min.css">
+</head>
+<body>
+<!-- The login page -->
+<div id="login" style="display:none">
+    <div class="game-title">Word Game</div>
+    <form id="login-form" class="pull-right">
+        <p style="font-family: 'Cormorant SC', serif; font-size: 35px;">Welcome</p>
+        <div>
+            <div>
+                <div class="form-group">
+                    <label for="login_username" class="sr-only">Username</label>
+                    <input type="text" class="form-control" id="login_username" placeholder="username">
+                </div>
+                <div class="form-group">
+                    <label for="login_password" class="sr-only">Password</label>
+                    <input type="password" class="form-control" id="login_password" placeholder="password">
+                </div>
+            </div>
+            <button type="submit" onclick="login(event)" class="mdui-btn mdui-ripple mdui-hoverable" style="font-family: 'Cormorant SC', serif;">Login
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- The USER view -->
+<div class="container" id="userContainer" style="display:none">
+    <div id="optionView">
+
+        <!-- The navigation view -->
+        <div class="well well-sm">
+            <span style="font-family: 'Cormorant SC', serif; font-size: 20px" >Welcome to guess game, GOOD LUCK!</span>
+            <span class="btn btn-xs btn-danger pull-right" style="display:inline-block;"
+                  onclick="logout(event)">logout</span>
+            <span class="pull-right" id="email" style="margin-right: 1em;"></span>
+        </div>
+
+        <!-- The optional choose view -->
+        <div class="panel well well-sm" id="option-form">
+            <form class="form-inline">
+                <div class="form-group pull-left">
+                    <label class="control-label  margin_right1" for="select-font">Font</label>
+                    <select id="select-font" class="form-control">
+                    </select>
+                </div>
+                <div class="form-group" style="margin-left: 10px">
+                    <label class="control-label  margin_right1" for="select-level">Level</label>
+                    <select id="select-level" class="form-control">
+                    </select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Word</span>
+                    <input id="wordColor" type="color" style="width: 4em" class="form-control min_width"/>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Guess</span>
+                    <input id="guessColor" type="color" style="width: 4em" class="form-control min_width"/>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Fore</span>
+                    <input id="foreColor" type="color" style="width: 4em" class="form-control min_width"/>
+                </div>
+                <button type="button" class="mdui-btn mdui-btn-raised mdui-ripple" onclick="updateDefaults()" id="updateUserDefaults">
+                    Update
+                </button>
+                <button type="button" class="btn btn-primary pull-right" onclick="newGame()" id="newAGame">
+                    New Game
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- The game list -->
+    <div class="well well-sm" id="gameList">
+        <table id="table" class="table table-condensed">
+            <thead>
+            <tr id="tableHead">
+                <th>Level</th>
+                <th>Phrase</th>
+                <th>Remaining</th>
+                <th>Answer</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody id="gameListBody"></tbody>
+        </table>
+    </div>
+
+    <!-- The game view page -->
+    <div id="gamePanel" style="display: none">
+        <div id="gameView-background" class="well well-sm">
+            <div class="form-inline">
+                <div id="gameControl" class="form-group">
+                    <span id="showRemaining"></span>
+                    <input type="text" id="wordGuess" class="form-control">
+                    <span id="game-guess" onclick="makeGuess()" class="btn btn-sm btn-primary">Guess</span>
+                </div>
+                <button id="closeGameView" class="btn btn-danger btn-sm pull-right" onclick="closeGameView()">&times;
+                </button>
+            </div>
+            <form class="form-inline">
+                <div id="game-content1" class="form-group pull-right"></div>
+            </form>
+            <form class="form-inline">
+                <div id="game-content2" class="form-group"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- The ADMIN page -->
+<div class="container" id="adminContainer" style="display: none">
+    <div class="mdui-appbar">
+
+        <!-- Navigation part -->
+        <div class="mdui-tab mdui-color-blue-300" mdui-tab>
+            <a class="mdui-ripple mdui-ripple-white mdui-typo-title">Welcome to Admin Page</a>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="margin-left: 30px">
+                        <a class="mdui-hoverable mdui-shadow-[12] mdui-ripple mdui-color-blue-300" onclick="getUsers()">User List</a>
+                    </li>
+                    <li style="margin-left: 10px">
+                        <a class="mdui-btn mdui-hoverable mdui-shadow-[12] mdui-ripple mdui-color-blue-300"
+                           data-toggle="modal" data-target="#searchUserModal">Search</a>
+                    </li>
+                    <li style="margin-left: 10px">
+                        <a class="mdui-btn mdui-hoverable mdui-shadow-[12] mdui-ripple mdui-color-blue-300"
+                           data-toggle="modal" data-target="#addUserModal" onclick="createUserModal()">Add User</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- logout part -->
+            <div>
+                <!--<a class="mdui-text-lowercase" style="margin-left: 250px;" id="adminEmail"></a>-->
+                <div class="mdui-chip mdui-color-blue-200" style="margin-top: 9px;margin-left: 250px">
+                    <span class="mdui-chip-icon mdui-color-blue-200"><i class="mdui-icon material-icons">face</i></span>
+                    <span class="mdui-chip-title" id="adminEmail"></span>
+                </div>
+                <span style="position: absolute;right:30px;top:7px; display:inline-block;" class="mdui-btn mdui-hoverable mdui-shadow-[12] mdui-ripple mdui-color-pink-400"
+                      onclick="logout(event)">logout</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 20px" id="usersList">
+        <div class="mdui-table-fluid">
+            <table class="mdui-table table-hover mdui-color-blue-200">
+                <thead>
+                <th class="col-sm-2">First Name</th>
+                <th class="col-sm-2">Last Name</th>
+                <th class="col-sm-2">Email</th>
+                <th class="col-sm-2">Role</th>
+                <th class="col-sm-2">Enabled</th>
+                </thead>
+                <tbody id="usersListBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- The modal adding one user -->
+<div class="modal fade bs-example-modal-s" id="userModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+
+        <!-- modal content -->
+        <div class="modal-content">
+            <!-- pitrure -->
+            <div class="mdui-card">
+                <div class="mdui-card-media">
+                    <img src="./images/card.jpg"/>
+                    <input id="userid" type="text" style="display: none">
+                        <!-- input content -->
+                        <div class="mdui-card-content">
+                            <ul class="mdui-list">
+                                <li>
+                                    <!-- first name -->
+                                    <div class="mdui-textfield mdui-textfield-floating-label">
+                                        <i class="mdui-icon material-icons" mdui-tooltip="{content: 'first name'}">account_circle</i>
+                                        <label class="mdui-textfield-label" id="firstNameLabe">First Name</label>
+                                        <input class="mdui-textfield-input" id="firstName"></input>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <!-- last name -->
+                                    <div class="mdui-textfield mdui-textfield-floating-label">
+                                        <i class="mdui-icon material-icons" mdui-tooltip="{content: 'last name'}">account_circle</i>
+                                        <label class="mdui-textfield-label" id="lastNameLable">Last Name</label>
+                                        <input class="mdui-textfield-input" id="lastName"></input>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <!-- email -->
+                                    <div class="mdui-textfield mdui-textfield-floating-label">
+                                        <i class="mdui-icon material-icons" mdui-tooltip="{content: 'your email'}">email</i>
+                                        <label class="mdui-textfield-label" id="emailLabe">Email</label>
+                                        <input class="mdui-textfield-input" type="email" id="add_email"></input>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <!-- password -->
+                                    <div class="mdui-textfield mdui-textfield-floating-label passwordModal">
+                                        <i class="mdui-icon material-icons" mdui-tooltip="{content: 'password'}">security</i>
+                                        <label class="mdui-textfield-label">Password</label>
+                                        <input class="mdui-textfield-input" minLength="8" type="password" id="add_password"></input>
+                                    </div>
+                                </li>
+                            </ul>
+                            <!-- role -->
+                            <div class="role" style="margin-left:6px; margin-top: 10px">
+                                <i class="mdui-icon material-icons">accessibility</i>
+                                <a style="margin-left: 23px; font-size: 17px; color:grey">Role</a>
+                                <select id="role" class="mdui-select" style="left:36px; bottom: 10px;" >
+                                    <!--<option>Select</option>
+                                    <option value="USER">USER</option>
+                                    <option value="ADMIN">ADMIN</option>-->
+                                </select>
+                            </div>
+
+                            <!-- enabled -->
+                            <div class="enabled" style="margin-left:6px; margin-top: 10px">
+                                <i class="mdui-icon material-icons">block</i>
+                                <a style="margin-left: 23px; font-size: 17px; color:grey">Enabled</a>
+                                <select id="enabled" class="mdui-select" style="left:10px; bottom: 10px;">
+                                    <!--<option>Select</option>
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>-->
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <hr/>
+                <!-- modal foot -->
+                <div class="mdui-card-actions" style="position: relative;z-index: 1">
+                    <button class="mdui-btn mdui-ripple mdui-color-teal-500" id="addUserBtn" onclick="addUser()" style="left:340px;display:none">Create</button>
+                    <button class="mdui-btn mdui-ripple mdui-color-teal-500" id="updateUserBtn" onclick="updateCurUser()" style="left:340px;display:none">Update</button>
+                    <button class="mdui-btn mdui-ripple" data-dismiss="modal" style="left:345px">Canceled</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- search user modal -->
+<div class="modal fade bs-example-modal-s" id="searchUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <!-- modal content -->
+        <div class="modal-content">
+            <!-- pitrure -->
+            <div class="mdui-card">
+                <div class="mdui-card-media">
+                    <img src="./images/card.jpg"/>
+                    <!-- input content -->
+                    <div class="mdui-card-media-covered">
+                        <ul class="mdui-list">
+                            <li>
+                                <!-- search condition -->
+                                <div class="mdui-textfield mdui-textfield-floating-label">
+                                    <i class="mdui-icon material-icons" mdui-tooltip="{content: 'type condition'}">search</i>
+                                    <label class="mdui-textfield-label">Search Condition</label>
+                                    <input class="mdui-textfield-input" id="req"></input>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- serach Result -->
+                <div class="mdui-card-content" id="searchResult">
+                    <div class="mdui-table-fluid" style="display: none">
+                        <table class="mdui-table table-hover">
+                            <thead>
+                            <th class="col-sm-2">First Name</th>
+                            <th class="col-sm-2">Last Name</th>
+                            <th class="col-sm-2">Email</th>
+                            <th class="col-sm-2">Role</th>
+                            <th class="col-sm-2">Enabled</th>
+                            </thead>
+                            <tbody id="searchResultTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- modal foot -->
+                <div class="mdui-card-actions" style="position: relative;z-index: 1">
+                    <button class="mdui-btn mdui-ripple mdui-color-teal-500" id="searchUserBtn" onclick="searchUsers()" style="left:340px;">Search</button>
+                    <button class="mdui-btn mdui-ripple" data-dismiss="modal" style="left:345px">Canceled</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/mdui/0.4.0/js/mdui.min.js"></script>
+<script src="javascripts/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <link rel="stylesheet" href="./resource/myStyle.css">
+</head>
+<body>
+<div class="container">
+
+    <h2 class="teal-text text-darken-2">Calculator</h2>
+
+    <div>
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s4 xValue">
+                    <!-- generate by jquery -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s4 yValue">
+                    <!-- generate by jquery -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s2">
+                    <select id="hashMode">
+                        <option value="SHA-1"><p style="color:#26a69a">sha1</p></option>
+                        <option value="MD5">md5</option>
+                        <option value="SHA-256">sha256</option>
+                        <option value="SHA-512">sha512</option>
+                    </select>
+                </div>
+                <div class="col s3" style="padding-top: 35px">
+                    <label>
+                        <input type="checkbox" id="default"/>
+                        <span>make default?</span>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="fixed-action-btn horizontal direction-right" style="position: absolute; top: 420px;">
+                    <a class="btn-floating btn-large teal">
+                        <i class="material-icons">arrow_forward</i>
+                    </a>
+                    <ul>
+                        <li><a class="btn-floating blue" type="button" onclick="calculate('pow')"><i class="material-icons">keyboard_arrow_up</i></a></li>
+                        <li><a class="btn-floating indigo" type="button" onclick="calculate('div')"><i class="material-icons">format_italic</i></a></li>
+                        <li><a class="btn-floating green" type="button" onclick="calculate('mul')"><i class="material-icons">close</i></a></li>
+                        <li><a class="btn-floating yellow darken-1" type="button" onclick="calculate('sub')"><i class="material-icons">remove</i></a></li>
+                        <li><a class="btn-floating red" type="button" onclick="calculate('add')"><i class="material-icons">add</i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- result content -->
+    <div class="resultContent">
+        <div class="card-panel" id="calResult" style="display: none"></div>
+        <div class="card-panel" id="hashResult" style="display: none"></div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+<script src="./resource/app.js"></script>
+</body>
+</html>
